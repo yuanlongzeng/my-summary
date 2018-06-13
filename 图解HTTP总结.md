@@ -6,7 +6,7 @@ RFC（Request for Comments，征求修正意见书）
 ### 请求：
 GET/POST URL HTTP/1.1  
 各种headers（Cache-Control、Refer防盗链）  
-\n\n  
+\r\n\r\n 
 请求体  
 [注]有时我们会在控制台看见浏览器会发生两个请求  
 第二个是浏览器自动发送的 GET /favicon.ico HTTP/1.1 请求  如果有就作为地址栏的图标  
@@ -15,7 +15,7 @@ GET/POST URL HTTP/1.1
 ### 响应： 
 HTTP/1.1 状态码 原因短语  
 response headers  
-\n\n  
+\r\n\r\n 
 请求体
 
 
