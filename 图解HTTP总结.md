@@ -12,6 +12,20 @@ GET/POST URL HTTP/1.1
 第二个是浏览器自动发送的 GET /favicon.ico HTTP/1.1 请求  如果有就作为地址栏的图标  
 `<link rel="icon" type="image/x-icon"  href="xxx/favicon.ico">`
 
+GET 请求的特点 查询字符串（名称/值对）是在 GET 请求的 URL 中发送：?name1=value1&name2=value2    
+GET 请求可被缓存    
+GET 请求保留在浏览器历史记录中  
+GET 请求可被收藏为书签  
+GET 请求不应在处理敏感数据时使用  
+GET 请求有长度限制  
+GET 请求只应当用于取回数据  
+
+POST 请求的特点 查询字符串（键/值对）是在 POST 请求的 HTTP 消息主体（body）中发送：Request body 中：name1=value1&name2=value2  
+POST 请求不会被缓存  
+POST 请求不会保留在浏览器历史记录中  
+POST 不能被收藏为书签  
+POST 请求对数据长度没有要求  
+
 ### 响应： 
 HTTP/1.1 状态码 原因短语  
 response headers  
