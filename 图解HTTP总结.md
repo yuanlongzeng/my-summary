@@ -79,6 +79,15 @@ Server最后不暴露这个信息  能更轻易的被利用漏洞攻击
 隐藏版本号：server_tokens off; //nginx.conf http中配置  
 自定义名称需要自己编译源码
 
+## nginx与RPC
+nginx可以作为反向代理服务器将各个子系统的服务统一，将后端多个服务地址聚合为单个地址来对外提供服务
+一般是走http协议（短连接）--一种特殊的 RPC  谷歌的gRPC就是建立在HTTP2.0之上  已没有明显界限
+但是Nginx 和后端服务之间还可以走其它的协议，
+比如 uwsgi 协议（gunicorn只能走http协议，uWSGI走uwsgi协议）、fastcgi 协议等，这两个协议都是采用了比 HTTP 协议更加节省流量的二进制协议
+关系：HTTP 与 RPC 的关系就好比普通话《官方方言》与方言的关系。
+要进行跨企业服务调用时，往往都是通过 HTTP API，也就是普通话，虽然效率不高，但是通用，没有太多沟通的学习成本。
+但是在企业内部还是 RPC 更加高效，同一个企业公用一套方言进行高效率的交流，要比通用的 HTTP 协议来交流更加节省资源
+
 ### 传输数据格式：Content-type
 MIME:多用途因特网邮件拓展multipuepose internet mail extensions
 多部分对象集合：multipart
@@ -188,6 +197,6 @@ CGI（Common Gateway Interface，通用网关接口）是指 Web 服务器在接
 HTTP 就是一个通用的单纯协议机制。因此它具备较多优势，但是在安全性方面则呈劣势。  
 就拿远程登录时会用到的 SSH 协议来说，SSH 具备协议级别的认证及会话管理等功能，HTTP 协议则没有
 
-
+### 
 
 
