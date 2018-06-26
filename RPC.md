@@ -52,9 +52,9 @@ python socket.send(str)  python字典使用json.dumps序列化成字符串
 socket.receiv(buffersize)得到的是bytes  使用json.loads()可以将各种对象（str,bytes）转换成python字典对象  
 
 
-单线程模型：  
-多线程模型：  
-多进程模型：  
+单线程模型：【代码】  
+多线程模型：【代码】 
+多进程模型：【代码】  
 多进程preForking:预先fork多个子进程（进程池模型），会有惊群问题（2.6版本内核好像已经没有这个问题了？）但是使用epoll解决非阻塞socket时有这个问题
 多进程多线程模型：  
 单进程异步模型：异步IO--使用时间轮询（事件循环：select poll epoll）监听套接字的读写事件  
