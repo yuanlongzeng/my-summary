@@ -1,4 +1,24 @@
+<!-- TOC -->
 
+- [http报文格式：](#http报文格式)
+    - [请求：](#请求)
+    - [响应：](#响应)
+    - [status code分类](#status-code分类)
+        - [3XX 重定向](#3xx-重定向)
+        - [4XX 的响应结果表明客户端是发生错误的原因所在](#4xx-的响应结果表明客户端是发生错误的原因所在)
+        - [5XX 的响应结果表明服务器本身发生错误](#5xx-的响应结果表明服务器本身发生错误)
+    - [常见status code](#常见status-code)
+    - [解决http的无状态性](#解决http的无状态性)
+- [一些header](#一些header)
+- [nginx缓存设置](#nginx缓存设置)
+    - [传输数据格式：Content-type](#传输数据格式content-type)
+    - [请求部分资源：用到首部的Range字段](#请求部分资源用到首部的range字段)
+- [内容协商字段：](#内容协商字段)
+- [安全](#安全)
+- [其他](#其他)
+        - [URL、URI](#urluri)
+
+<!-- /TOC -->
 
 RFC（Request for Comments，征求修正意见书）
 
