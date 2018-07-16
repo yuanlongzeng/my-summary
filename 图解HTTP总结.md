@@ -2,6 +2,7 @@
 
 - [http报文格式：](#http报文格式)
     - [请求：](#请求)
+	    - [HTTP method](#HTTP method) 
     - [响应：](#响应)
     - [status code分类](#status-code分类)
         - [3XX 重定向](#3xx-重定向)
@@ -31,6 +32,16 @@ GET/POST URL HTTP/1.1
 [注]有时我们会在控制台看见浏览器会发生两个请求  
 第二个是浏览器自动发送的 GET /favicon.ico HTTP/1.1 请求  如果有就作为地址栏的图标  
 `<link rel="icon" type="image/x-icon"  href="xxx/favicon.ico">`
+
+#### HTTP method
+GET用来获取资源，这可以是一类资源（/school/11/class可以获取ID是11的学校下面所有的班级），也可以是一个资源（/school/11/class/100可以获取ID是11的学校里ID是100的班级）；  
+POST用来创建资源，POST一般只能在类资源地址上创建资源（例如在/school下创建一个新的学校，在/school/11/class下创建一个新的班级），
+而不能使用个体资源地址（比如你在/school/11/class/100上使用POST就不合适了，除非是/school/11/class/100/student）。  
+POST不是用来修改资源，修改或更新资源应该用PUT。  
+PUT和POST相反，一般只在个体资源地址上使用用来修改一个已经存在的资源，DELETE也类似，用来删除一个已经存在的资源。  
+用途的不同决定了表现形式的不同。GET中URL一般已经足够清楚资源在哪里，
+所以除了在URL中添加一些查询字符串（例如/school/12/class?grade=2用来查询所有2年级的班级）来进一步约定查询条件外，
+不需要在body中添加额外的资源了；POST和PUT中因为需要携带足够的信息给服务器来创建或修改资源，所以把这些信息放入body中携带更为合理一些。
 
 GET 请求的特点 查询字符串（名称/值对）是在 GET 请求的 URL 中发送：?name1=value1&name2=value2    
 GET 请求可被缓存    
