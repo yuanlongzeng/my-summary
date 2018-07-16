@@ -2,7 +2,7 @@
 
 - [http报文格式：](#http报文格式)
     - [请求：](#请求)
-	    - [HTTP method](#HTTP method) 
+        - [HTTP method](#http-method)
     - [响应：](#响应)
     - [status code分类](#status-code分类)
         - [3XX 重定向](#3xx-重定向)
