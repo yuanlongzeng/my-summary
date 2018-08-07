@@ -1,3 +1,26 @@
+<!-- TOC -->
+
+- [Docker：](#docker)
+    - [进程隔离原理:Linux命名空间](#进程隔离原理linux命名空间)
+    - [网络：通过 iptables 进行数据包转发](#网络通过-iptables-进行数据包转发)
+    - [文件系统隔离：目录挂载](#文件系统隔离目录挂载)
+        - [chroot](#chroot)
+    - [概念](#概念)
+        - [镜像—类   容器—类的实例对象](#镜像类---容器类的实例对象)
+        - [镜像：](#镜像)
+        - [容器：独立运行的一个或一组应用](#容器独立运行的一个或一组应用)
+        - [UnionFS](#unionfs)
+        - [关系](#关系)
+    - [命令](#命令)
+    - [Run的运行机理](#run的运行机理)
+    - [Dockerfile: 定制镜像—独立容器](#dockerfile-定制镜像独立容器)
+        - [指令](#指令)
+    - [Dokcer-compose:一组容器完成完整项目](#dokcer-compose一组容器完成完整项目)
+    - [Docker Swarm](#docker-swarm)
+    - [CI/CD：Drone](#cicddrone)
+
+<!-- /TOC -->
+
 # Docker：
 
 ## Docker从入门到实践
@@ -58,3 +81,42 @@ run 重要参数：
 -p: 端口映射，格式为：主机(宿主)端口:容器端口  
 -t: 为容器重新分配一个伪输入终端，通常与 -i 同时使用；  
 --name="nginx-lb": 为容器指定一个名称；  
+## Run的运行机理
+当利用 docker run 来创建容器时，Docker 在后台运行的标准操作包括：  
+检查本地是否存在指定的镜像，不存在就从公有仓库下载  
+利用镜像创建并启动一个容器  
+分配一个文件系统，并在只读的镜像层外面挂载一层可读写层  
+从宿主主机配置的网桥接口中桥接一个虚拟接口到容器中去  
+从地址池配置一个 ip 地址给容器、执行用户指定的应用程序、执行完毕后容器被终止  
+## Dockerfile: 定制镜像—独立容器
+镜像的定制实际上就是定制每一层所添加的配置、文件：  
+把每一层修改、安装、构建、操作的命令都写入一个脚本,  
+每一条指令构建一层，因此每一条指令的内容，就是描述该层应当如何构建：
+### 指令
+FROM 基础镜像名称 （from scratch <没有基础镜像，go>）  
+RUN 命令行：shell命令/脚本+可选参数  每条命令都会创建一层镜像（commit），所以一般应该使用&&连接各条命令。防止镜像层数过多（有最大层数限制）每次run之后都是一个全新的镜像（启动一个容器、执行命令、然后提交存储层文件变更），和需提供run的执行环境不一样（WORKDIR可以影响后面的所有层） 
+支持换行/和注释#  
+一组命令的最后添加清理工作的命令，清理了所有下载、展开的文件，并且还清理了 apt 缓存文件apt-get purge -y --auto-remove $buildDeps （否则会一直在镜像中，导致臃肿）
+
+构建：docker build [选项：-t镜像名称]  镜像上下文【目录、URL】（打包发送给服务端 .dockerignore）  从标准输入读取dockerfile时没有上下文  
+执行时是客户端通过rest API与docker引擎交互，在服务端构建   
+Copy 目标目录不用提前创建，不存在会自动创建  
+CMD:容器启动时有默认的cmd  如docker run –it Ubuntu  默认就会进入/bin/bash  
+
+## Dokcer-compose:一组容器完成完整项目
+使用python编写，调用docker的rest API接口对容器进行管理  
+服务 ( service )：一个应用的容器，实际上可以包括若干运行相同镜像的容器实例。  
+项目 ( project )：由一组关联的应用容器组成的一个完整业务单元，在 docker-compose.yml 文件中定义。  
+docker-compose run service_name ud_cmd . #运行服务自定义cmd，首次运行会创建容器  
+docker-compose stop/rm  
+删除镜像要先停止其容器，删除子镜像及其容器  docker stop container_id \docker prune  
+Docker rmi id  删除镜像再重新构建才会重新根据dockerfile构建镜像  
+docker-compose up #它将尝试自动完成包括构建镜像，（重新）创建服务，启动服务，并关联服务相关容器的一系列操作  
+
+## Docker Swarm
+提供 Docker 容器集群服务，是 Docker 官方对容器云生态进行支持的核心方案。 可以将多个 Docker 主机封装为单个大型的虚拟 Docker 主机，快速打造一套容器云平台。
+
+Swarm mode 已经内嵌入 Docker 引擎，成为了 docker 子命令 docker swarm 。请注意与旧的 Docker Swarm 区分开来。  
+Swarm mode 内置 kv 存储功能，提供了众多的新特性，比如：具有容错能力的去中心化设计、内置服务发现、负载均衡、路由网格、动态伸缩、滚动更新、安全传输等。使得 Docker原生的 Swarm 集群具备与 Mesos、Kubernetes 竞争的实力。
+
+## CI/CD：Drone
