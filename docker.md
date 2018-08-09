@@ -18,6 +18,8 @@
     - [Dokcer-compose:一组容器完成完整项目](#dokcer-compose一组容器完成完整项目)
     - [Docker Swarm](#docker-swarm)
     - [CI/CD：Drone](#cicddrone)
+    - [使用实例](#使用实例)
+        - [安装rabbitmq](#安装rabbitmq)
 
 <!-- /TOC -->
 
@@ -120,3 +122,20 @@ Swarm mode 已经内嵌入 Docker 引擎，成为了 docker 子命令 docker swa
 Swarm mode 内置 kv 存储功能，提供了众多的新特性，比如：具有容错能力的去中心化设计、内置服务发现、负载均衡、路由网格、动态伸缩、滚动更新、安全传输等。使得 Docker原生的 Swarm 集群具备与 Mesos、Kubernetes 竞争的实力。
 
 ## CI/CD：Drone
+
+## 使用实例
+### 安装rabbitmq
+docker安装命令   
+	docker run -d -p 5672:5672 rabbitmq  
+进入容器，查看服务器的情况  
+	docker ps  #查看id  
+	docker exec -it rabbitmq_id  
+运行命令查看  
+    rabbitmqctl status  
+发现rabbitmq自带可视化管理界面    
+	rabbitmq-plugins enable rabbitmq_management  
+但是默认端口为15672，需为其重新分配端口一遍可在容器外查看，运行下列命令    
+	docker stop rabbitmq_id  
+	docker commit rabbitmq_id new_name  
+	docker run -d -p 5672:5672 -p 15672:15672 new_name  
+输入localhost:15672,输入默认账户密码guest就可以进入可视化管理界面
